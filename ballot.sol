@@ -50,6 +50,9 @@ contract Ballot {
 		require(state == _state);
 		_;
 	}
+	
+	
+	
 
     event voterAdded(address voter);
     event voteStarted();
@@ -85,14 +88,13 @@ contract Ballot {
     {
         bool found = false;
         
-        if (bytes(voterRegister[msg.sender].voterName).length != 0 
-        && !voterRegister[msg.sender].voted){
+        if (bytes(voterRegister[msg.sender].voterName).length != 0 && !voterRegister[msg.sender].voted){
             voterRegister[msg.sender].voted = true;
             vote memory v;
             v.voterAddress = msg.sender;
             v.choice = _choice;
             if (_choice){
-                countResult++; //counting on the go
+                countResult++; 
             }
             votes[totalVote] = v;
             totalVote++;
@@ -102,13 +104,15 @@ contract Ballot {
         return found;
     }
     
+    
+    
     function endVote()
         public
         inState(State.Voting)
         onlyOfficial
     {
         state = State.Ended;
-        finalResult = countResult; //move result from private countResult to public finalResult
+        finalResult = countResult; 
         emit voteEnded(finalResult);
     }
 }
